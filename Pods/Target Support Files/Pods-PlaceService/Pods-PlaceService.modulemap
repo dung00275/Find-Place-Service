@@ -1,0 +1,6 @@
+framework module Pods_PlaceService {
+  umbrella header "Pods-PlaceService-umbrella.h"
+
+  export *
+  module * { export * }
+}

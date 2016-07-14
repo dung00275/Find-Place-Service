@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11163.2" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Pz1-M2-g3f">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11133"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="8tP-g4-AZS">
+            <objects>
+                <navigationController id="Pz1-M2-g3f" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="q6K-Q0-1gD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="sjr-uf-70m"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yJI-EP-ZMq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1173" y="-328"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PlaceService" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6A-8s-I5R" customClass="GMSMapView">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fnd-Lb-8yx">
+                                <items>
+                                    <barButtonItem title="Item" id="7UC-zB-ord"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="fnd-Lb-8yx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Gmq-OY-gup"/>
+                            <constraint firstAttribute="trailing" secondItem="j6A-8s-I5R" secondAttribute="trailing" id="Wh6-Lp-eLG"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fnd-Lb-8yx" secondAttribute="bottom" id="bze-Ky-Wgh"/>
+                            <constraint firstItem="j6A-8s-I5R" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="nUG-9H-E5U"/>
+                            <constraint firstAttribute="trailing" secondItem="fnd-Lb-8yx" secondAttribute="trailing" id="nxd-mV-Sok"/>
+                            <constraint firstItem="fnd-Lb-8yx" firstAttribute="top" secondItem="j6A-8s-I5R" secondAttribute="bottom" id="obU-Pu-jpH"/>
+                            <constraint firstItem="j6A-8s-I5R" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="uw4-rV-Hy4"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="LX0-SA-Tno"/>
+                    <connections>
+                        <outlet property="mapView" destination="j6A-8s-I5R" id="uBV-i6-Dfz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-306.39999999999998" y="-328.78560719640183"/>
+        </scene>
+    </scenes>
+</document>
