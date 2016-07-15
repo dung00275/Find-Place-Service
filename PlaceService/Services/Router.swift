@@ -62,7 +62,7 @@ enum Router {
         guard let url = urlComponent?.url else {
             return nil
         }
-        print(url)
+
         return URLRequest(url: url)
     }
     
