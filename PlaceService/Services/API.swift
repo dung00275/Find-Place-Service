@@ -9,8 +9,10 @@
 import Foundation
 
 struct API {
-    static let key = "AIzaSyDWFH-1dl5uwYGCNPZ64oT_e2mSuItrk_0"
+    static let keyPlaces = "AIzaSyDWFH-1dl5uwYGCNPZ64oT_e2mSuItrk_0"
+    static let keyMap = "AIzaSyC7el_3yUX8FQttFI2kJ-zHElwZrwe5cfk"
     static let placeBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    static let directionBaseUrl = "https://maps.googleapis.com/maps/api/directions/json"
 }
 
 enum ServiceType: String {

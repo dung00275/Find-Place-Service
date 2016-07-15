@@ -32,14 +32,29 @@ public class JSONSubscript{
     subscript(key: String) -> JSONSubscript {
         get{
             nestedKey = key
-            currentValue = dictionary?[key]
+            currentValue = findValueWithArrayString(fromComponents: key.components(separatedBy: "."))
             return self
         }
-        
-        set{
-            dictionary?[key] = newValue.dictionary?[key]
-        }
     }
+    
+    private func findValueWithArrayString(fromComponents components: [String]) -> AnyObject? {
+        guard let lastKey = components.last else {
+            return nil
+        }
+        var dict: [String: AnyObject]? = self.dictionary
+        for component in components{
+            if component != lastKey {
+                if dict == nil {return nil}
+                dict = dict?[component] as? [String: AnyObject]
+            }else {
+                return dict?[component]
+            }
+            
+        }
+        return nil
+    }
+    
+    
 }
 
 // Transfer object

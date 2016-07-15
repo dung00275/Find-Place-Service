@@ -21,6 +21,14 @@
             </objects>
             <point key="canvasLocation" x="-1173" y="-328"/>
         </scene>
+        <!--AlertConfirmViewController-->
+        <scene sceneID="SCv-B6-Q2b">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Alert" referencedIdentifier="AlertConfirmViewController" id="dr4-hX-3pP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u7g-uf-vpb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="529" y="-725"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -56,11 +64,12 @@
                     <navigationItem key="navigationItem" id="LX0-SA-Tno"/>
                     <connections>
                         <outlet property="mapView" destination="j6A-8s-I5R" id="uBV-i6-Dfz"/>
+                        <segue destination="dr4-hX-3pP" kind="custom" identifier="showConfirm" customClass="AlertSegue" customModule="PlaceService" customModuleProvider="target" id="b2b-hf-DCM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-306.39999999999998" y="-328.78560719640183"/>
+            <point key="canvasLocation" x="-250" y="-310"/>
         </scene>
     </scenes>
 </document>

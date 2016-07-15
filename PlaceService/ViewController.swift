@@ -14,8 +14,11 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var mapView: GMSMapView!
     var myLocation: CLLocationCoordinate2D!
-    
+    lazy var transition = AnimationAlertDelegate()
     private lazy var imageClearColor = getImageWithColor(fromColor: UIColor.clear(), size: CGSize(width: 20, height: 20)) ?? UIImage()
+    private var currentMarker: GMSMarker?
+    private var routePolyline: GMSPolyline?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,6 +126,46 @@ class ViewController: UIViewController {
         response.results?.forEach({self.makeMarker(place: $0)})
     }
     
+    func trackRouteForPlace() {
+        guard let currentMarker = currentMarker else {
+            return
+        }
+        
+        let destination = currentMarker.position
+        ServiceManager.sharedInstance.request(URLRequest: Router.FindRoute(originLocation: myLocation, destinationLocation: destination, mode: TravelModes.driving).request) { [weak self](result, response) in
+            
+            switch result {
+            case .Success(let json):
+                
+                let obj = JSONTransfer<DirectionResponse>.mapToObject(fromResponse: json)
+                self?.drawRoute(fromResponse: obj)
+            case .Fail(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+    }
+    
+    func resetRoute() {
+        routePolyline?.map = nil
+        routePolyline = nil
+    }
+    
+    func drawRoute(fromResponse response:DirectionResponse?) {
+        // Reset First
+        resetRoute()
+        guard let route = response?.routes?.first?.points else {
+            return
+        }
+        
+        let path = GMSPath(fromEncodedPath: route)
+        routePolyline = GMSPolyline(path: path)
+        routePolyline?.strokeWidth = 5
+        routePolyline?.strokeColor = #colorLiteral(red: 0.1991284192, green: 0.6028449535, blue: 0.9592232704, alpha: 1)
+        routePolyline?.map = mapView
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -150,13 +193,30 @@ extension ViewController: GMSMapViewDelegate {
         }
     }
 
-    func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker) {
-        
+    
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        self.performSegue(withIdentifier: "showConfirm", sender: nil)
+        currentMarker = marker
     }
     
     func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
         LocationService.sharedInstance.startUpdateLocation()
         return true
+    }
+}
+
+extension ViewController: AlertConfirmDelegate {
+    func alertFindRoute(_ alert: UIViewController) {
+        alert.dismiss(animated: true) { 
+            self.trackRouteForPlace()
+        }
+        
+    }
+    
+    
+    func alertCancel(_ alert: UIViewController) {
+        alert.dismiss(animated: true, completion: nil)
+        currentMarker = nil
     }
 }
 
