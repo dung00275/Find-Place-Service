@@ -27,13 +27,13 @@ public func <- <T>( left: inout T?, right: JSONSubscript) {
 
 // URL
 public func <- <T: NSURL>( left: inout T, right: JSONSubscript) {
-    if let path = right.currentValue as? String , url = NSURL(string: path) as? T {
+    if let path = right.currentValue as? String , let url = NSURL(string: path) as? T {
         left = url
     }
 }
 
 public func <- <T: NSURL>( left: inout T?, right: JSONSubscript) {
-    if let path = right.currentValue as? String , url = NSURL(string: path) as? T {
+    if let path = right.currentValue as? String , let url = NSURL(string: path) as? T {
         left = url
     }
 }
@@ -81,7 +81,7 @@ public func <- <T: NSURL>( left: inout [T], right: JSONSubscript) {
     var result = [T]()
     if let items = right.currentValue as? [AnyObject] {
         for obj in items {
-            if let value = obj as? String, url = NSURL(string: value) as? T {
+            if let value = obj as? String, let url = NSURL(string: value) as? T {
                 result.append(url)
             }
         }
@@ -94,7 +94,7 @@ public func <- <T: NSURL>( left: inout [T]?, right: JSONSubscript) {
     var result = [T]()
     if let items = right.currentValue as? [AnyObject] {
         for obj in items {
-            if let value = obj as? String, url = NSURL(string: value) as? T {
+            if let value = obj as? String, let url = NSURL(string: value) as? T {
                 result.append(url)
             }
         }

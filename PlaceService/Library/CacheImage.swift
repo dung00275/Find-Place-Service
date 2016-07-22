@@ -48,7 +48,7 @@ class CacheImage {
             return nil
         }
         
-        if let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage) where fileManager.fileExistAtURL(url: fileCacheURL)  {
+        if let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage) , fileManager.fileExistAtURL(url: fileCacheURL)  {
             let image = UIImage(contensOfURL: fileCacheURL)?.scaledToSize(toSize: CGSize(width: 20, height: 20))
 
             if image != nil {
@@ -73,7 +73,7 @@ class CacheImage {
             }else {
                 // Move to cache
                 let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage)
-                if let locationPath = locationPath, cacheUrl = fileCacheURL where cacheUrl != nil {
+                if let locationPath = locationPath, let cacheUrl = fileCacheURL  {
                     if (self?.fileManager.fileExistAtURL(url: locationPath) ?? false) && !(self?.fileManager.fileExistAtURL(url: cacheUrl) ?? false) {
                         do {
                             try self?.fileManager.copyItem(at: locationPath, to: cacheUrl!)

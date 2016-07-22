@@ -14,7 +14,7 @@ class PlaceLocation: JSONMapProtocol {
     var lng: Double?
     
     lazy var coordinate: CLLocationCoordinate2D = {
-        guard let lat = self.lat, lng = self.lng  else {
+        guard let lat = self.lat, let lng = self.lng  else {
             return CLLocationCoordinate2D()
         }
         
