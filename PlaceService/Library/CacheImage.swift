@@ -20,6 +20,9 @@ public typealias DownloadImageCompletion = (result: ImageResult) -> Void
 class CacheImage {
     
     static let sharedInstance = CacheImage()
+    private var currentActives: [String : String] = [:]
+    private lazy var fileManager = FileManager.default
+    
     
     private lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.default
@@ -45,19 +48,22 @@ class CacheImage {
             return nil
         }
         
-        let fileManager = FileManager.default
         if let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage) where fileManager.fileExistAtURL(url: fileCacheURL)  {
             let image = UIImage(contensOfURL: fileCacheURL)?.scaledToSize(toSize: CGSize(width: 20, height: 20))
+
             if image != nil {
                 self.cache.setObject(image!, forKey: nameImage)
             }
-            DispatchQueue.main.async(execute: {
-                completion(result: .Success(image: image))
-            })
+            completion(result: .Success(image: image))
             
             return nil
         }
         
+        
+        if currentActives[nameImage] != nil {
+            currentActives[nameImage] = nameImage
+            return nil
+        }
         
         let task = session.downloadTask(with: url) { [weak self](locationPath, response, error) in
             if let error = error {
@@ -66,23 +72,30 @@ class CacheImage {
                 })
             }else {
                 // Move to cache
-                DispatchQueue.global(attributes: .qosBackground).sync(execute: {
-                    let image = UIImage(contensOfURL: locationPath)?.scaledToSize(toSize: CGSize(width: 20, height: 20))
-                    
-                    if image != nil {
-                        self?.cache.setObject(image!, forKey: nameImage)
-                    }
-                    let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage)
-                    if let locationPath = locationPath, cacheUrl = fileCacheURL where cacheUrl != nil {
+                let fileCacheURL = try? URL.cacheURL()?.appendingPathComponent(nameImage)
+                if let locationPath = locationPath, cacheUrl = fileCacheURL where cacheUrl != nil {
+                    if (self?.fileManager.fileExistAtURL(url: locationPath) ?? false) && !(self?.fileManager.fileExistAtURL(url: cacheUrl) ?? false) {
                         do {
-                            try fileManager.moveItem(at: locationPath, to: cacheUrl!)
+                            try self?.fileManager.copyItem(at: locationPath, to: cacheUrl!)
                         }catch let errorMove as NSError{
                             print(errorMove.localizedDescription)
                         }
                     }
-                    DispatchQueue.main.async(execute: {
-                        completion(result: .Success(image: image))
-                    })
+                    
+                }
+                
+                DispatchQueue.global(attributes: .qosBackground).async(execute: {
+                    let _ = self?.currentActives.removeValue(forKey: nameImage)
+                    let image = UIImage(contensOfURL: fileCacheURL!)?.scaledToSize(toSize: CGSize(width: 20, height: 20))
+                    completion(result: .Success(image: image))
+                    
+                    if image != nil {
+                        self?.cache.setObject(image!, forKey: nameImage)
+                    }else {
+                        print("error")
+                    }
+                    
+                    
                 })
             }
         }

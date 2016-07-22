@@ -64,7 +64,10 @@ class ViewController: UIViewController {
             switch result {
             case .Success(let json):
                 let obj = JSONTransfer<PlaceResponse>.mapToObject(fromResponse: json)
-                self?.displayPlaces(fromPlaceResponse: obj)
+                DispatchQueue.main.async(execute: { 
+                    self?.displayPlaces(fromPlaceResponse: obj)
+                })
+                
             case .Fail(let error):
                 print(error.localizedDescription)
             }
@@ -81,10 +84,17 @@ class ViewController: UIViewController {
             return
         }
         
-        let marker = GMSMarker(position: location.coordinate)
+        let marker = MarkerPlace(position: location.coordinate)
+//        marker.data = detail
         marker.title = detail.name
         marker.snippet = detail.vicinity
         marker.icon = imageClearColor
+//        if let view = Bundle.main.loadNibNamed("MarkerView", owner: nil, options: nil).first as? MarkerView{
+//            view.url = detail.icon as? URL
+//            marker.iconView = view
+//        }
+        
+        
         
         if let url = detail.icon as? URL{
             if let lastPath = url.lastPathComponent {
@@ -122,6 +132,7 @@ class ViewController: UIViewController {
         guard let response = response else {
             return
         }
+//        mapView.clear()
         
         response.results?.forEach({self.makeMarker(place: $0)})
     }
@@ -138,7 +149,10 @@ class ViewController: UIViewController {
             case .Success(let json):
                 
                 let obj = JSONTransfer<DirectionResponse>.mapToObject(fromResponse: json)
-                self?.drawRoute(fromResponse: obj)
+                DispatchQueue.main.async(execute: { 
+                    self?.drawRoute(fromResponse: obj)
+                })
+                
             case .Fail(let error):
                 print(error.localizedDescription)
             }
